@@ -52,6 +52,26 @@ var (
 	defaultLogger *Logger
 )
 
+type ILogger interface {
+	SetLevel(lvl Level)
+	Close()
+
+	Info(v ...interface{})
+	Warning(v ...interface{})
+	Error(v ...interface{})
+	Fatal(v ...interface{})
+
+	Infoln(v ...interface{})
+	Warningln(v ...interface{})
+	Errorln(v ...interface{})
+	Fatalln(v ...interface{})
+
+	Infof(format string, v ...interface{})
+	Warningf(format string, v ...interface{})
+	Errorf(format string, v ...interface{})
+	Fatalf(format string, v ...interface{})
+}
+
 // initialize resets defaultLogger.  Which allows tests to reset environment.
 func initialize() {
 	defaultLogger = &Logger{
