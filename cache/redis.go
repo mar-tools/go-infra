@@ -2,6 +2,7 @@ package cache
 
 import (
 	"gopkg.in/redis.v3"
+	"time"
 )
 
 // redis initialize config
@@ -72,4 +73,20 @@ func (r *RedisCache) Set(key []byte, value []byte) error {
 
 func (r *RedisCache) Delete(key []byte) error {
 	return r.client.Del(string(key)).Err()
+}
+
+func (r *RedisCache) Exists(key []byte) (bool, error) {
+	return r.client.Exists(string(key)).Result()
+}
+
+func (r *RedisCache) SetNX(key []byte, value []byte, expiration time.Duration) error {
+	return r.client.SetNX(string(key), string(value), expiration).Err()
+}
+
+func (r *RedisCache) Expire(key []byte, expiration time.Duration) (bool, error) {
+	return r.client.Expire(string(key), expiration).Result()
+}
+
+func (r *RedisCache) ExpireAt(key []byte, tm time.Time) (bool, error) {
+	return r.client.ExpireAt(string(key), tm).Result()
 }
